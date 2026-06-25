@@ -32,9 +32,7 @@ class CommonLocalFileApi(object):
             target_file = self.localrepo.layersdir + '/' + layer_id + ".layer"
         else:
             return False
-        try:
-            os.rename(filepath, target_file)
-        except (IOError, OSError):
+        if not os.path.exists(target_file):
             if not FileUtil(filepath).copyto(target_file):
                 return False
         self.localrepo.add_image_layer(target_file, linkname)
