@@ -492,9 +492,13 @@ class DockerIoAPI(object):
                                                manifest["fsLayers"])
             elif "layers" in manifest:
                 if "config" in manifest:
-                    manifest["layers"].append(manifest["config"])
-                files = self.get_v2_layers_all(imagerepo,
-                                               manifest["layers"])
+                    files = self.get_v2_layers_all(
+                        imagerepo,
+                        manifest["layers"] + [manifest["config"]])
+                else:
+                    files = self.get_v2_layers_all(
+                        imagerepo,
+                        manifest["layers"])
             else:
                 Msg().err("Error: layers section missing in manifest")
         except (KeyError, AttributeError, IndexError, ValueError, TypeError):
